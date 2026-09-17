@@ -1,0 +1,27 @@
+.theme {
+  --v2-ink: #080b09;
+  --v2-surface: #121914;
+  --v2-forest: #173b2b;
+  --v2-paper: #e8eadf;
+  --v2-text: #f1f2ea;
+  --v2-muted: #a8b3aa;
+  --v2-accent: #a7f3c1;
+  --v2-emerald: #35d889;
+  --v2-line: rgb(241 242 234 / 20%);
+  --v2-gutter: clamp(24px, 3.6vw, 72px);
+  --v2-font: var(--font-manrope), Arial, sans-serif;
+  --v2-ease: cubic-bezier(.22, 1, .36, 1);
+  --v2-duration: 650ms;
+  --v2-header-height: 80px;
+  color: var(--v2-text);
+  background: var(--v2-ink);
+  font-family: var(--v2-font);
+  color-scheme: dark;
+}
+
+@media (max-width: 767px) {
+  .theme {
+    --v2-gutter: 24px;
+    --v2-header-height: 72px;
+  }
+}

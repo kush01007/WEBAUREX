@@ -1,0 +1,20 @@
+.process { padding: clamp(80px, 8vw, 140px) var(--v2-gutter) 35px; background: var(--v2-paper); color: #17241b; scroll-margin-top: 64px; color-scheme: light; }
+.eyebrow { display: flex; gap: 12px; color: #566457; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; }
+.heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 70px; margin-block: 35px 80px; }
+.heading h2 { font-size: clamp(46px, 6.8vw, 114px); font-weight: 400; letter-spacing: -.065em; line-height: 1.04; }
+.heading h2 > span { color: #657563; }
+.heading p { max-width: 340px; padding-bottom: 5px; font-size: 14px; line-height: 1.85; color: #4c5c4f; }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+.step { display: flex; flex-direction: column; border-top: 1px solid #9daa9a; padding: 25px 28px 30px; border-left: 1px solid #c0c9ba; }
+.step:first-child { padding-left: 0; border-left: 0; }
+.step:last-child { padding-right: 0; }
+.stepTop { display: flex; align-items: center; gap: 15px; font-size: 11px; }
+.stepTop > span:first-child { color: #61735f; font-variant-numeric: tabular-nums; }
+.stepTop > svg { width: 15px; height: 15px; margin-left: auto; color: #61735f; }
+.step h3 { font-size: clamp(22px, 2.2vw, 36px); font-weight: 450; letter-spacing: -.05em; line-height: 1.2; margin-top: 45px; }
+.step p { margin-top: 20px; font-size: 13px; line-height: 1.9; color: #526052; }
+.outcome { display: flex; align-items: center; gap: 9px; margin-top: auto; padding-top: 34px; font-size: 10px; line-height: 1.6; }
+.outcome > span { color: #61735f; }
+.bottom { display: flex; justify-content: space-between; gap: 24px; padding-top: 26px; margin-top: 30px; border-top: 1px solid #bbc4b5; color: #536151; font-size: 11px; line-height: 1.6; }
+@media (max-width: 1000px) { .heading { align-items: flex-start; gap: 32px; flex-direction: column; margin-bottom: 55px; } .heading p { max-width: 480px; } .steps { grid-template-columns: 1fr 1fr; } .step { padding-block: 25px 40px; } .step:nth-child(3) { padding-left: 0; border-left: 0; } .step:nth-child(2) { padding-right: 0; } .step h3 { margin-top: 30px; font-size: 30px; } }
+@media (max-width: 540px) { .heading h2 { font-size: 46px; } .heading p { font-size: 13px; } .steps { grid-template-columns: 1fr; } .step, .step:first-child, .step:last-child { padding: 25px 0 32px; border-left: 0; } .step h3 { margin-top: 22px; } .step p { margin-top: 14px; } .outcome { padding-top: 20px; } .bottom { align-items: flex-start; flex-direction: column; gap: 8px; margin-top: 0; } }

@@ -1,0 +1,122 @@
+export const projectCaseStudies = [
+  {
+    slug: "bold-cave",
+    number: "01",
+    title: "BOLD CAVE",
+    titleLines: ["BOLD", "CAVE"],
+    category: "E-commerce website",
+    year: "2026",
+    client: "Bold Cave",
+    industry: "Fragrance & E-commerce",
+    services: ["UX & UI Design", "Full-stack Development", "E-commerce", "Payments & Shipping"],
+    heroDesktop: "/showcase/boldcaveimgs/1.png",
+    heroMobile: "/showcase/boldcaveimgs/7.png",
+    heroVideoDesktop: "/showcase/boldcavedesk.mp4",
+    heroVideoMobile: "/showcase/boldcavemob.mp4",
+    heroAlt: "Bold Cave fragrance store homepage",
+    videoAlt: "Bold Cave website walkthrough",
+    objective: [
+      "Bold Cave needed more than a good-looking fragrance store. The goal was to build a complete shopping experience that could carry the brand’s visual character while keeping product discovery, checkout, payments and order management simple.",
+      "The result is a custom e-commerce experience built around the actual way the business sells and manages its products.",
+    ],
+    deliverables: [
+      ["Build the storefront", "A clean product-led experience designed around fragrance discovery, variants and buying decisions."],
+      ["Simplify the purchase flow", "Cart, authentication, address, checkout and payments were designed as one connected journey."],
+      ["Connect the operations", "Orders, shipping, OTP, payments and admin tools work together behind the storefront."],
+      ["Make it work everywhere", "The complete experience was adapted for desktop and mobile without losing the brand character."],
+    ],
+    statement: "A complete store, not just a storefront.",
+    summary: "A custom e-commerce system that gives Bold Cave a clear brand presence on the customer side and a practical foundation for managing products, payments, orders and fulfilment behind it.",
+    visuals: [
+      { src: "/showcase/boldcaveimgs/2.png", alt: "Bold Cave collection page" },
+      { src: "/showcase/boldcaveimgs/3.png", alt: "Bold Cave product detail page" },
+      { src: "/showcase/boldcaveimgs/4.png", alt: "Bold Cave shopping cart" },
+      { src: "/showcase/boldcaveimgs/5.png", alt: "Bold Cave checkout flow" },
+      { src: "/showcase/boldcaveimgs/6.png", alt: "Bold Cave orders and administration experience" },
+    ],
+    url: "https://boldcave.com/",
+  },
+  {
+    slug: "sumukh-visuals",
+    number: "02",
+    title: "SUMUKH VISUALS",
+    titleLines: ["SUMUKH", "VISUALS"],
+    category: "Creative brand website",
+    year: "2026",
+    client: "Sumukh Visuals",
+    industry: "Creative Services & Personal Brand",
+    services: ["UX & UI Design", "Web Development", "Portfolio", "Client Experience"],
+    heroDesktop: "/showcase/sumukhimages/first.png",
+    heroMobile: "/showcase/sumukhimages/seventh.png",
+    heroVideoDesktop: "/showcase/sumukhvisualdesk.mp4",
+    heroVideoMobile: "/showcase/sumukhvisualmob.mp4",
+    heroAlt: "Sumukh Visuals portfolio homepage",
+    videoAlt: "Sumukh Visuals website walkthrough",
+    objective: [
+      "Sumukh Visuals needed a website that could represent creative work professionally without becoming a basic portfolio page.",
+      "The goal was to bring services, selected work, digital products and the client workflow into one consistent experience that feels like the creative brand behind it.",
+    ],
+    deliverables: [
+      ["Present the work", "Portfolio and service sections put the visual work first while keeping the site easy to explore."],
+      ["Build around the business", "The website supports services as well as digital product sales and payments."],
+      ["Improve the client experience", "A dedicated client portal gives projects, progress and communication a clearer home."],
+      ["Keep the brand consistent", "Dark visuals, strong typography and controlled motion carry the same creative identity across the site."],
+    ],
+    statement: "One home for the work and the business behind it.",
+    summary: "A creative website that showcases the brand publicly while giving services, products and client projects a more organised digital experience.",
+    visuals: [
+      { src: "/showcase/sumukhimages/second.png", alt: "Sumukh Visuals selected work page" },
+      { src: "/showcase/sumukhimages/third.png", alt: "Sumukh Visuals services page" },
+      { src: "/showcase/sumukhimages/fourth.png", alt: "Sumukh Visuals digital product page" },
+      { src: "/showcase/sumukhimages/fifth.png", alt: "Sumukh Visuals client portal" },
+      { src: "/showcase/sumukhimages/sixth.png", alt: "Sumukh Visuals project and client experience" },
+    ],
+    url: "https://www.sumukhvisuals.com/",
+  },
+  {
+    slug: "styleloom",
+    number: "03",
+    title: "STYLELOOM",
+    titleLines: ["STYLE", "LOOM"],
+    category: "Fashion e-commerce",
+    year: "2026",
+    client: "StyleLoom",
+    industry: "Fashion E-commerce",
+    services: ["UX & UI Design", "MERN Development", "E-commerce", "Admin System"],
+    heroDesktop: "/showcase/styloomimages/1st.png",
+    heroMobile: "/showcase/styloomimages/7th.png",
+    heroVideoDesktop: "/showcase/styloomdesk.mp4",
+    heroVideoMobile: "/showcase/styloommob.mp4",
+    heroAlt: "StyleLoom fashion store homepage",
+    videoAlt: "StyleLoom website walkthrough",
+    objective: [
+      "StyleLoom was built as a complete fashion e-commerce experience rather than a static storefront.",
+      "The focus was to create a clean editorial shopping journey while connecting the customer-facing store with authentication, cart, checkout, payments, orders and an admin workflow.",
+    ],
+    deliverables: [
+      ["Create the shopping experience", "A modern fashion storefront built around collections, products and clear browsing."],
+      ["Connect the buying journey", "Authentication, cart, checkout, Razorpay and COD work as one flow."],
+      ["Handle the order lifecycle", "Customers can place and review orders while the admin side supports product and order management."],
+      ["Build beyond the desktop", "Storefront and admin experiences were made responsive across different screen sizes."],
+    ],
+    statement: "Editorial on the surface. Functional underneath.",
+    summary: "A complete fashion commerce experience combining a clean customer-facing store with the systems needed for checkout, payments, orders and administration.",
+    visuals: [
+      { src: "/showcase/styloomimages/2nd.png", alt: "StyleLoom collection page" },
+      { src: "/showcase/styloomimages/3rd.png", alt: "StyleLoom product detail page" },
+      { src: "/showcase/styloomimages/4th.png", alt: "StyleLoom shopping cart" },
+      { src: "/showcase/styloomimages/5th.png", alt: "StyleLoom checkout flow" },
+      { src: "/showcase/styloomimages/6th.png", alt: "StyleLoom customer and admin orders" },
+    ],
+    url: "https://styleloom-ecommerce-proj.vercel.app/",
+  },
+];
+
+export function getProjectCaseStudy(slug) {
+  return projectCaseStudies.find((project) => project.slug === slug);
+}
+
+export function getNextProject(slug) {
+  const index = projectCaseStudies.findIndex((project) => project.slug === slug);
+  return projectCaseStudies[(index + 1) % projectCaseStudies.length];
+}

@@ -1,0 +1,55 @@
+.root {
+  position: fixed;
+  z-index: 2147483000;
+  top: 0;
+  left: 0;
+  width: 27px;
+  height: 28px;
+  pointer-events: none;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  will-change: transform, opacity;
+}
+
+.root[data-visible="true"] { opacity: 1; }
+.root[data-theme="light"] { color: #050706; }
+.root[data-theme="dark"] { color: #fff; }
+
+.shape {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 96% 50%;
+  transition: transform 240ms cubic-bezier(.22, 1, .36, 1);
+  filter: none;
+}
+
+.root[data-action="true"] .shape {
+  transform: translateX(-1px) scale(1.08);
+}
+
+.root[data-pressed="true"] .shape {
+  transform: translateX(1px) scale(.84);
+}
+
+:global(html[data-webaurex-cursor="true"]),
+:global(html[data-webaurex-cursor="true"] body),
+:global(html[data-webaurex-cursor="true"] a),
+:global(html[data-webaurex-cursor="true"] button),
+:global(html[data-webaurex-cursor="true"] summary),
+:global(html[data-webaurex-cursor="true"] [role="button"]) {
+  cursor: none !important;
+}
+
+:global(html[data-webaurex-cursor="true"] input),
+:global(html[data-webaurex-cursor="true"] textarea),
+:global(html[data-webaurex-cursor="true"] select),
+:global(html[data-webaurex-cursor="true"] [contenteditable="true"]) {
+  cursor: text !important;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .root { display: none; }
+}
