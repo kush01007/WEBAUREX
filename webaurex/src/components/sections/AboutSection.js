@@ -76,10 +76,11 @@ function AboutImage() {
   return (
     <div className="about-visual">
       <Image
-        src="/reference/studio.webp"
-        alt="Prismatic glass chess pieces in a dark studio setting"
+        src="/reference/studio-w.webp"
+        alt="Polished metallic Webaurex W sculpture"
         fill
-        sizes="(max-width: 700px) calc(100vw - 44px), 620px"
+        sizes="(max-width: 460px) 62vw, (max-width: 700px) 58vw, (max-width: 900px) 72vw, 560px"
+        loading="lazy"
         className="object-cover"
       />
     </div>

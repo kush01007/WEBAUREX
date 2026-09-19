@@ -1,10 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ContactSection() {
+  const sectionRef = useRef(null);
+  const [loadVideo, setLoadVideo] = useState(false);
   const [fields, setFields] = useState({ name: "", email: "", message: "" });
   const complete = Object.values(fields).every(value => value.trim());
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !("IntersectionObserver" in window)) {
+      setLoadVideo(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setLoadVideo(true);
+      observer.disconnect();
+    }, { rootMargin: "500px 0px" });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   function update(event) {
     setFields({ ...fields, [event.target.name]: event.target.value });
@@ -18,16 +37,16 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" className="contact-video-section" aria-labelledby="contact-heading">
+    <section ref={sectionRef} id="contact" className="contact-video-section" aria-labelledby="contact-heading">
       <video
         className="contact-background-video"
-        src="/videos/contactvid.mp4"
+        src={loadVideo ? "/videos/contactvid.mp4" : undefined}
         poster="/reference/journal-3.webp"
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         aria-hidden="true"
         tabIndex={-1}
       />

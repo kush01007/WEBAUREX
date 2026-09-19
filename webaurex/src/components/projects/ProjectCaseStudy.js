@@ -136,7 +136,7 @@ function WalkthroughVideo({ project }) {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         aria-label={project.videoAlt}
       >
         <source src={project.heroVideoMobile} media="(max-width: 767px)" type="video/mp4" />

@@ -11,8 +11,14 @@ export default function TestimonialsSection() {
   const reduced = useReducedMotion();
   const railRef = useRef(null);
   const dragRef = useRef({ active: false, startX: 0, startScroll: 0 });
+  const pauseUntilRef = useRef(0);
+  const lastAdvanceRef = useRef(0);
   const [pageCount, setPageCount] = useState(1);
   const [activePage, setActivePage] = useState(0);
+
+  const pauseAutoplay = useCallback(() => {
+    pauseUntilRef.current = Date.now() + 4000;
+  }, []);
 
   const measureRail = useCallback(() => {
     const rail = railRef.current;
@@ -50,18 +56,22 @@ export default function TestimonialsSection() {
   useEffect(() => {
     if (reduced || pageCount <= 1) return;
 
+    lastAdvanceRef.current = Date.now();
+
     const timer = window.setInterval(() => {
       const rail = railRef.current;
-      if (!rail || dragRef.current.active) return;
+      const now = Date.now();
+      if (!rail || dragRef.current.active || now < pauseUntilRef.current || now - lastAdvanceRef.current < 2500) return;
 
       const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+      lastAdvanceRef.current = now;
       setActivePage((currentPage) => {
         const nextPage = (currentPage + 1) % pageCount;
         const left = maxScroll * (nextPage / (pageCount - 1));
         rail.scrollTo({ left, behavior: "smooth" });
         return nextPage;
       });
-    }, 2000);
+    }, 250);
 
     return () => window.clearInterval(timer);
   }, [pageCount, reduced]);
@@ -70,12 +80,14 @@ export default function TestimonialsSection() {
     const rail = railRef.current;
     if (!rail) return;
 
+    pauseAutoplay();
     const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
     const left = pageCount <= 1 ? 0 : maxScroll * (index / (pageCount - 1));
     rail.scrollTo({ left, behavior: reduced ? "auto" : "smooth" });
   };
 
   const handlePointerDown = (event) => {
+    pauseAutoplay();
     if (event.pointerType !== "mouse") return;
     const rail = railRef.current;
     if (!rail) return;
@@ -95,6 +107,7 @@ export default function TestimonialsSection() {
     const rail = railRef.current;
     if (!rail || !dragRef.current.active) return;
     dragRef.current.active = false;
+    pauseAutoplay();
     delete rail.dataset.dragging;
     if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
   };
@@ -113,6 +126,10 @@ export default function TestimonialsSection() {
         ref={railRef}
         className="testimonials-rail"
         onScroll={measureRail}
+        onWheel={pauseAutoplay}
+        onTouchStart={pauseAutoplay}
+        onTouchMove={pauseAutoplay}
+        onTouchEnd={pauseAutoplay}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={stopDragging}

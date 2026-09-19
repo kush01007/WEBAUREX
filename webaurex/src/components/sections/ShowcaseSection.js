@@ -1,6 +1,5 @@
 "use client";
 
-import { getImageProps } from "next/image";
 import Link from "next/link";
 import { projects } from "@/data/homepageData";
 import WorkMotion from "@/components/homepage-v2/work/WorkMotion";
@@ -8,34 +7,21 @@ import { Arrow, MaskLines, Reveal } from "./SectionReveal";
 import styles from "./ShowcaseSection.module.css";
 
 function ProjectImage({ project, priority = false }) {
-  const common = {
-    alt: project.imageAlt,
-    sizes: "(max-width: 767px) 100vw, 92vw",
-    loading: priority ? "eager" : "lazy",
-    fetchPriority: priority ? "high" : "auto",
-  };
-  const {
-    props: { srcSet: desktop },
-  } = getImageProps({
-    ...common,
-    src: project.image,
-    width: project.imageWidth,
-    height: project.imageHeight,
-  });
-  const {
-    props: { srcSet: mobile, alt, ...rest },
-  } = getImageProps({
-    ...common,
-    src: project.mobileImage,
-    width: project.mobileImageWidth,
-    height: project.mobileImageHeight,
-  });
-
   return (
     <picture>
-      <source media="(min-width: 768px)" srcSet={desktop} />
-      <source media="(max-width: 767px)" srcSet={mobile} />
-      <img {...rest} alt={alt} className={styles.image} />
+      <source media="(min-width: 768px)" srcSet={project.image} type="image/webp" />
+      <source media="(max-width: 767px)" srcSet={project.mobileImage} type="image/webp" />
+      <img
+        src={project.mobileImage}
+        alt={project.imageAlt}
+        width={project.mobileImageWidth}
+        height={project.mobileImageHeight}
+        loading="eager"
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
+        className={styles.image}
+        style={{ backgroundImage: `url(${project.blurDataURL})`, backgroundSize: "cover" }}
+      />
     </picture>
   );
 }
