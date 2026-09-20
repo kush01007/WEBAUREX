@@ -54,7 +54,7 @@ export default function TestimonialsSection() {
   }, [measureRail]);
 
   useEffect(() => {
-    if (reduced || pageCount <= 1) return;
+    if (pageCount <= 1) return;
 
     lastAdvanceRef.current = Date.now();
 
@@ -64,13 +64,14 @@ export default function TestimonialsSection() {
       if (!rail || dragRef.current.active || now < pauseUntilRef.current || now - lastAdvanceRef.current < 2500) return;
 
       const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+      if (maxScroll <= 0) return;
+      const cardWidth = rail.firstElementChild?.getBoundingClientRect().width || rail.clientWidth;
+      const nextLeft = rail.scrollLeft + cardWidth >= maxScroll - 2
+        ? 0
+        : Math.min(maxScroll, rail.scrollLeft + cardWidth);
+
       lastAdvanceRef.current = now;
-      setActivePage((currentPage) => {
-        const nextPage = (currentPage + 1) % pageCount;
-        const left = maxScroll * (nextPage / (pageCount - 1));
-        rail.scrollTo({ left, behavior: "smooth" });
-        return nextPage;
-      });
+      rail.scrollTo({ left: nextLeft, behavior: reduced ? "auto" : "smooth" });
     }, 250);
 
     return () => window.clearInterval(timer);
@@ -128,7 +129,6 @@ export default function TestimonialsSection() {
         onScroll={measureRail}
         onWheel={pauseAutoplay}
         onTouchStart={pauseAutoplay}
-        onTouchMove={pauseAutoplay}
         onTouchEnd={pauseAutoplay}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}

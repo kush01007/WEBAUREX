@@ -32,7 +32,8 @@ export default function ContactSection() {
   function prepareEnquiry(event) {
     event.preventDefault();
     if (!complete) return;
-    const content = `Hi Webaurex,\n\nI'm ${fields.name.trim()}.\nEmail: ${fields.email.trim()}\n\nProject details:\n${fields.message.trim()}`;
+    const name = fields.name.trim();
+    const content = `Hello Webaurex Studio,\n\nI would like to discuss a potential project with your team.\n\n*Contact details*\nName: ${name}\nEmail: ${fields.email.trim()}\n\n*Project brief*\n${fields.message.trim()}\n\nPlease let me know the next steps and a convenient time to connect.\n\nThank you,\n${name}`;
     window.open(`https://wa.me/916396511494?text=${encodeURIComponent(content)}`, "_blank", "noopener,noreferrer");
   }
 

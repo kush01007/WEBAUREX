@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { services } from "@/data/homepage-v2";
 import { ease, useReducedMotion } from "./SectionReveal";
@@ -64,6 +64,8 @@ function ServicePanel({ service, index, reduced }) {
               src={service.media}
               alt={`${service.title} service direction`}
               fill
+              unoptimized
+              loading="eager"
               sizes="(max-width: 767px) 90vw, 52vw"
               className="object-cover"
             />
@@ -95,6 +97,13 @@ function ServicePanel({ service, index, reduced }) {
 export default function ServicesSection() {
   const [active, setActive] = useState(0);
   const reduced = useReducedMotion();
+
+  useEffect(() => {
+    services.forEach((service) => {
+      const image = new window.Image();
+      image.src = service.media;
+    });
+  }, []);
 
   return (
     <section
