@@ -373,6 +373,19 @@ export default function StudioNavbar() {
             border: 0 !important;
             background: transparent !important;
             color: #f5f5f2 !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+
+          .studio-navbar-toggle:focus,
+          .studio-navbar-toggle:focus-visible,
+          .studio-navbar-toggle:active {
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
           }
 
           /* Compact editorial sheet for the mobile menu. */
@@ -421,6 +434,19 @@ export default function StudioNavbar() {
             border: 0 !important;
             background: transparent !important;
             color: #0a0d0c !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+
+          .studio-navbar-menu-close:focus,
+          .studio-navbar-menu-close:focus-visible,
+          .studio-navbar-menu-close:active {
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
           }
 
           .studio-navbar-menu-close > span::before,
