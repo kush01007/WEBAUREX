@@ -7,7 +7,7 @@ import { MaskLines, Reveal, ease, useReducedMotion } from "./SectionReveal";
 
 const stats = [
   ["8+", "Websites launched"],
-  ["1.5+", "Users reached"],
+  ["2K+", "Users reached"],
   ["98%", "Client satisfaction rate"],
   ["3+", "Years of expertise"],
 ];
