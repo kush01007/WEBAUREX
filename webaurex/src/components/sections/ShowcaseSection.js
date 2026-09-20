@@ -78,7 +78,7 @@ function Project({ project, index }) {
           className={styles.liveSite}
           aria-label={`Visit the live ${project.title} website`}
         >
-          Live website <span aria-hidden="true">↗</span>
+          Live website <Arrow className={styles.liveSiteArrow} />
         </a>
       </div>
     </article>

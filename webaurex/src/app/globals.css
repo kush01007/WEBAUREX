@@ -190,6 +190,7 @@ a:hover .rolling-label > span, a:focus-visible .rolling-label > span { transform
    Class name kept for the mobile @media override (object-position: 59% 50%). */
 .studio-hero-wordmark {
   position: absolute;
+  z-index: 10;
   inset: auto 0 calc(10px - .5vw);
   display: flex;
   align-items: baseline;
@@ -360,18 +361,20 @@ a:hover .rolling-label > span, a:focus-visible .rolling-label > span { transform
     animation-delay: calc((3 - var(--nav-index)) * 20ms);
   }
   .studio-hero-wordmark {
-    inset: auto 0 calc(max(72px, 8.5svh) - 35px);
+    inset: auto 0 clamp(22px, 4svh, 36px);
     padding-inline: 5%;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    gap: 0;
-    font-size: 23.8cqw;
-    line-height: .84;
-    letter-spacing: -.054em;
-    transform: translateY(20px);
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: .28em;
+    font-size: clamp(40px, 12.4cqw, 58px);
+    line-height: .96;
+    letter-spacing: -.045em;
+    transform: none;
   }
-  .studio-hero-word-mask:last-child { font-size: 1.27em; line-height: .8; }
+  .studio-hero-word-mask { width: max-content; flex: 0 0 auto; }
+  .studio-hero-word-mask:last-child { font-size: 1em; line-height: inherit; }
 }
 
 @keyframes studio-menu-fade {

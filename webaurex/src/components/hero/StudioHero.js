@@ -1,9 +1,48 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 export default function StudioHero() {
   const reducedMotion = useReducedMotion();
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return undefined;
+
+    // iOS Safari can ignore declarative autoplay after a restore, tab switch,
+    // or Low Power Mode transition. Keep the media explicitly muted and retry
+    // playback at the moments Safari makes it eligible again.
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    const play = () => {
+      if (!document.hidden && video.paused) video.play().catch(() => {});
+    };
+    const handleVisibility = () => {
+      if (!document.hidden) play();
+    };
+
+    video.addEventListener("loadedmetadata", play);
+    video.addEventListener("canplay", play);
+    window.addEventListener("pageshow", play);
+    document.addEventListener("visibilitychange", handleVisibility);
+    document.addEventListener("touchstart", play, { passive: true });
+    document.addEventListener("pointerdown", play);
+    play();
+
+    return () => {
+      video.removeEventListener("loadedmetadata", play);
+      video.removeEventListener("canplay", play);
+      window.removeEventListener("pageshow", play);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      document.removeEventListener("touchstart", play);
+      document.removeEventListener("pointerdown", play);
+    };
+  }, []);
 
   return (
     <section
@@ -16,7 +55,8 @@ export default function StudioHero() {
       </a>
 
       <video
-        className="studio-hero-video pointer-events-none absolute inset-0 h-full w-full object-cover object-center [z-index:-1]"
+        ref={videoRef}
+        className="studio-hero-video pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
         src="/videos/webhero2.mp4"
         autoPlay
         muted
@@ -30,7 +70,7 @@ export default function StudioHero() {
       <h1
         id="hero-heading"
         tabIndex={-1}
-        className="studio-hero-wordmark"
+        className="studio-hero-wordmark z-10"
         aria-label="Webaurex Studio"
       >
         {["Webaurex", "Studio"].map((word) => (

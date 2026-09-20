@@ -105,6 +105,12 @@
   color: #111;
 }
 
+.liveSiteArrow {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+
 .visual {
   position: relative;
   display: block;

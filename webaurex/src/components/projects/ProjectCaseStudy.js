@@ -65,7 +65,7 @@ function Reveal({ children, className = "", delay = 0, as = "div", ...props }) {
   );
 }
 
-function Visual({ visual, className = "", sizes = "100vw", priority = false }) {
+function Visual({ visual, className = "", sizes = "100vw" }) {
   const reducedMotion = useReducedMotion();
   return (
     <motion.figure
@@ -75,7 +75,14 @@ function Visual({ visual, className = "", sizes = "100vw", priority = false }) {
       viewport={{ once: true, amount: 0.08 }}
       transition={{ duration: reducedMotion ? 0 : 0.95, ease }}
     >
-      <Image src={visual.src} alt={visual.alt} fill sizes={sizes} priority={priority} />
+      <Image
+        src={visual.src}
+        alt={visual.alt}
+        fill
+        sizes={sizes}
+        loading="eager"
+        unoptimized
+      />
     </motion.figure>
   );
 }
@@ -90,8 +97,19 @@ function ProjectHero({ project }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: reducedMotion ? 0 : 0.95, ease }}
     >
-      <Image className={styles.heroImageDesktop} src={project.heroDesktop} alt={project.heroAlt} fill sizes="94vw" priority />
-      <Image className={styles.heroImageMobile} src={project.heroMobile} alt={project.heroAlt} fill sizes="100vw" priority />
+      <picture className={styles.heroPicture}>
+        <source media="(max-width: 767px)" srcSet={project.heroMobile} type="image/webp" />
+        <source media="(min-width: 768px)" srcSet={project.heroDesktop} type="image/webp" />
+        <img
+          src={project.heroDesktop}
+          alt={project.heroAlt}
+          width="1800"
+          height="850"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+        />
+      </picture>
     </motion.figure>
   );
 }
