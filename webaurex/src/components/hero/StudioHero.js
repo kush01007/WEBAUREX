@@ -9,7 +9,7 @@ export default function StudioHero() {
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="studio-hero relative isolate h-[100svh] w-full overflow-hidden bg-[#04100a] text-[#f4f5f1]"
+      className="studio-hero relative isolate h-[68svh] min-h-[400px] max-h-[560px] w-full overflow-hidden bg-[#04100a] text-[#f4f5f1] md:h-[100svh] md:min-h-0 md:max-h-none"
     >
       <a href="#hero-heading" className="skip-link">
         Skip to content

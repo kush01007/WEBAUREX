@@ -10,7 +10,8 @@ const visibleTestimonials = testimonials.slice(0, 4);
 export default function TestimonialsSection() {
   const reduced = useReducedMotion();
   const railRef = useRef(null);
-  const dragRef = useRef({ active: false, startX: 0, startScroll: 0 });
+  const dragRef = useRef({ active: false, horizontal: false, pointerType: null, startX: 0, startY: 0, startScroll: 0 });
+  const autoplayVisibleRef = useRef(false);
   const pauseUntilRef = useRef(0);
   const lastAdvanceRef = useRef(0);
   const [pageCount, setPageCount] = useState(1);
@@ -43,12 +44,19 @@ export default function TestimonialsSection() {
 
     const frame = requestAnimationFrame(measureRail);
     const resizeObserver = new ResizeObserver(measureRail);
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      const visible = entry.isIntersecting;
+      if (visible && !autoplayVisibleRef.current) lastAdvanceRef.current = Date.now() - 2500;
+      autoplayVisibleRef.current = visible;
+    }, { threshold: 0.2 });
     resizeObserver.observe(rail);
+    visibilityObserver.observe(rail);
     window.addEventListener("resize", measureRail);
 
     return () => {
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
       window.removeEventListener("resize", measureRail);
     };
   }, [measureRail]);
@@ -56,12 +64,10 @@ export default function TestimonialsSection() {
   useEffect(() => {
     if (pageCount <= 1) return;
 
-    lastAdvanceRef.current = Date.now();
-
     const timer = window.setInterval(() => {
       const rail = railRef.current;
       const now = Date.now();
-      if (!rail || dragRef.current.active || now < pauseUntilRef.current || now - lastAdvanceRef.current < 2500) return;
+      if (!rail || !autoplayVisibleRef.current || dragRef.current.active || now < pauseUntilRef.current || now - lastAdvanceRef.current < 2500) return;
 
       const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
       if (maxScroll <= 0) return;
@@ -88,25 +94,49 @@ export default function TestimonialsSection() {
   };
 
   const handlePointerDown = (event) => {
-    pauseAutoplay();
-    if (event.pointerType !== "mouse") return;
     const rail = railRef.current;
     if (!rail) return;
 
-    dragRef.current = { active: true, startX: event.clientX, startScroll: rail.scrollLeft };
+    if (event.pointerType !== "mouse") {
+      dragRef.current = { active: false, horizontal: false, pointerType: event.pointerType, startX: event.clientX, startY: event.clientY, startScroll: rail.scrollLeft };
+      return;
+    }
+
+    pauseAutoplay();
+    dragRef.current = { active: true, horizontal: true, pointerType: "mouse", startX: event.clientX, startY: event.clientY, startScroll: rail.scrollLeft };
     rail.setPointerCapture(event.pointerId);
     rail.dataset.dragging = "true";
   };
 
   const handlePointerMove = (event) => {
     const rail = railRef.current;
-    if (!rail || !dragRef.current.active) return;
+    if (!rail) return;
+
+    if (dragRef.current.pointerType && dragRef.current.pointerType !== "mouse") {
+      const deltaX = event.clientX - dragRef.current.startX;
+      const deltaY = event.clientY - dragRef.current.startY;
+      if (!dragRef.current.horizontal && Math.abs(deltaX) > 10 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        dragRef.current.horizontal = true;
+        pauseAutoplay();
+      }
+      return;
+    }
+
+    if (!dragRef.current.active) return;
     rail.scrollLeft = dragRef.current.startScroll - (event.clientX - dragRef.current.startX);
   };
 
   const stopDragging = (event) => {
     const rail = railRef.current;
-    if (!rail || !dragRef.current.active) return;
+    if (!rail) return;
+
+    if (dragRef.current.pointerType && dragRef.current.pointerType !== "mouse") {
+      if (dragRef.current.horizontal) pauseAutoplay();
+      dragRef.current = { active: false, horizontal: false, pointerType: null, startX: 0, startY: 0, startScroll: rail.scrollLeft };
+      return;
+    }
+
+    if (!dragRef.current.active) return;
     dragRef.current.active = false;
     pauseAutoplay();
     delete rail.dataset.dragging;
@@ -128,8 +158,6 @@ export default function TestimonialsSection() {
         className="testimonials-rail"
         onScroll={measureRail}
         onWheel={pauseAutoplay}
-        onTouchStart={pauseAutoplay}
-        onTouchEnd={pauseAutoplay}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={stopDragging}
