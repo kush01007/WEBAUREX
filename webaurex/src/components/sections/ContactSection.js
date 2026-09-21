@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function ContactSection() {
   const sectionRef = useRef(null);
+  const videoRef = useRef(null);
   const [loadVideo, setLoadVideo] = useState(false);
   const [fields, setFields] = useState({ name: "", email: "", message: "" });
   const complete = Object.values(fields).every(value => value.trim());
@@ -25,6 +26,51 @@ export default function ContactSection() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    const video = videoRef.current;
+    if (!loadVideo || !section || !video) return undefined;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    let inView = false;
+    const play = () => {
+      if (inView && !document.hidden && video.paused) {
+        video.play().catch(() => {});
+      }
+    };
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      if (inView) play();
+      else video.pause();
+    }, { threshold: 0.01 });
+    const handleVisibility = () => {
+      if (document.hidden) video.pause();
+      else play();
+    };
+
+    visibilityObserver.observe(section);
+    video.addEventListener("loadedmetadata", play);
+    video.addEventListener("canplay", play);
+    window.addEventListener("pageshow", play);
+    document.addEventListener("visibilitychange", handleVisibility);
+    document.addEventListener("touchstart", play, { passive: true });
+    video.load();
+
+    return () => {
+      visibilityObserver.disconnect();
+      video.removeEventListener("loadedmetadata", play);
+      video.removeEventListener("canplay", play);
+      window.removeEventListener("pageshow", play);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      document.removeEventListener("touchstart", play);
+      video.pause();
+    };
+  }, [loadVideo]);
+
   function update(event) {
     setFields({ ...fields, [event.target.name]: event.target.value });
   }
@@ -40,17 +86,24 @@ export default function ContactSection() {
   return (
     <section ref={sectionRef} id="contact" className="contact-video-section" aria-labelledby="contact-heading">
       <video
+        ref={videoRef}
         className="contact-background-video"
-        src={loadVideo ? "/videos/contactvid.mp4" : undefined}
         poster="/reference/journal-3.webp"
         autoPlay
         muted
         loop
         playsInline
-        preload="none"
+        preload={loadVideo ? "auto" : "none"}
         aria-hidden="true"
         tabIndex={-1}
-      />
+      >
+        {loadVideo && (
+          <>
+            <source src="/videos/contactvid-mobile.mp4" media="(max-width: 767px)" type="video/mp4" />
+            <source src="/videos/contactvid-desktop.mp4" media="(min-width: 768px)" type="video/mp4" />
+          </>
+        )}
+      </video>
       <div className="contact-video-overlay" aria-hidden="true" />
 
       <div className="contact-video-card">
