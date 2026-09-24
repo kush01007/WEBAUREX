@@ -1,5 +1,6 @@
 import { Geist, Manrope } from "next/font/google";
 import "./globals.css";
+import webaurexLogo from "./webauerexlogo.png";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -16,6 +17,11 @@ const geist = Geist({
 export const metadata = {
   title: "Webaurex Studio — Websites That Feel Like Brands",
   description: "Independent web design and development. Webaurex Studio builds thoughtful, distinctive websites that feel like brands.",
+  icons: {
+    icon: [{ url: webaurexLogo.src, type: "image/png" }],
+    shortcut: [{ url: webaurexLogo.src, type: "image/png" }],
+    apple: [{ url: webaurexLogo.src, type: "image/png" }],
+  },
 };
 
 export default function RootLayout({ children }) {
