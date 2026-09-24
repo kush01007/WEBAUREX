@@ -16,8 +16,11 @@ export default function StudioHero() {
     // playback at the moments Safari makes it eligible again.
     video.muted = true;
     video.defaultMuted = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("autoplay", "");
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "");
+    video.removeAttribute("controls");
 
     const play = () => {
       if (!document.hidden && video.paused) video.play().catch(() => {});
@@ -62,6 +65,8 @@ export default function StudioHero() {
         muted
         loop
         playsInline
+        controls={false}
+        disablePictureInPicture
         preload="auto"
         aria-hidden="true"
         tabIndex={-1}
@@ -110,6 +115,13 @@ export default function StudioHero() {
           overflow: hidden !important;
           padding: 0.13em 0.07em 0.12em !important;
           margin: -0.13em -0.07em -0.12em !important;
+        }
+
+        #hero .studio-hero-video::-webkit-media-controls,
+        #hero .studio-hero-video::-webkit-media-controls-start-playback-button {
+          display: none !important;
+          -webkit-appearance: none !important;
+          opacity: 0 !important;
         }
 
         @media (min-width: 768px) {
