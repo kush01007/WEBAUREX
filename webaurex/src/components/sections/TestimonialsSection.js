@@ -72,7 +72,7 @@ export default function TestimonialsSection() {
       const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
       if (maxScroll <= 0) return;
       const cardWidth = rail.firstElementChild?.getBoundingClientRect().width || rail.clientWidth;
-      const nextLeft = rail.scrollLeft + cardWidth >= maxScroll - 2
+      const nextLeft = rail.scrollLeft >= maxScroll - 2
         ? 0
         : Math.min(maxScroll, rail.scrollLeft + cardWidth);
 
