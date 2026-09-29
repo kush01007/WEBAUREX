@@ -77,7 +77,7 @@ function AboutImage() {
     <div className="about-visual">
       <Image
         src="/reference/studio-w.webp"
-        alt="Polished metallic Webaurex W sculpture"
+        alt="Polished metallic Webaurex Studio W logo sculpture"
         fill
         sizes="(max-width: 460px) 62vw, (max-width: 700px) 58vw, (max-width: 900px) 72vw, 560px"
         loading="lazy"

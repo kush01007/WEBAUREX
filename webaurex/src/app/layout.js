@@ -1,6 +1,13 @@
 import { Geist, Manrope } from "next/font/google";
 import "./globals.css";
 import webaurexLogo from "./webauerexlogo.png";
+import {
+  GOOGLE_SITE_VERIFICATION,
+  HOME_TITLE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -15,12 +22,32 @@ const geist = Geist({
 });
 
 export const metadata = {
-  title: "Webaurex Studio — Websites That Feel Like Brands",
-  description: "Independent web design and development. Webaurex Studio builds thoughtful, distinctive websites that feel like brands.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: HOME_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  manifest: "/manifest.webmanifest",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: GOOGLE_SITE_VERIFICATION,
+  },
   icons: {
-    icon: [{ url: webaurexLogo.src, type: "image/png" }],
+    icon: [{ url: webaurexLogo.src, sizes: "512x512", type: "image/png" }],
     shortcut: [{ url: webaurexLogo.src, type: "image/png" }],
-    apple: [{ url: webaurexLogo.src, type: "image/png" }],
+    apple: [{ url: webaurexLogo.src, sizes: "512x512", type: "image/png" }],
   },
 };
 
