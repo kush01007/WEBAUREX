@@ -6,6 +6,7 @@ import { testimonials } from "@/data/homepageData";
 import { MaskLines, ease, useReducedMotion } from "./SectionReveal";
 
 const visibleTestimonials = testimonials.slice(0, 4);
+const autoplayDelay = 2500;
 
 export default function TestimonialsSection() {
   const reduced = useReducedMotion();
@@ -43,21 +44,43 @@ export default function TestimonialsSection() {
     if (!rail) return;
 
     const frame = requestAnimationFrame(measureRail);
-    const resizeObserver = new ResizeObserver(measureRail);
-    const visibilityObserver = new IntersectionObserver(([entry]) => {
-      const visible = entry.isIntersecting;
-      if (visible && !autoplayVisibleRef.current) lastAdvanceRef.current = Date.now() - 2500;
-      autoplayVisibleRef.current = visible;
-    }, { threshold: 0.2 });
+    let visibilityFrame = 0;
+
+    const updateAutoplayVisibility = () => {
+      visibilityFrame = 0;
+      const { top, bottom } = rail.getBoundingClientRect();
+      const inViewport = bottom > 0 && top < window.innerHeight;
+      const fullyVisible = top >= -1 && bottom <= window.innerHeight + 1;
+
+      if (fullyVisible && !autoplayVisibleRef.current) {
+        autoplayVisibleRef.current = true;
+        lastAdvanceRef.current = Date.now();
+      } else if (!inViewport) {
+        autoplayVisibleRef.current = false;
+      }
+    };
+
+    const scheduleVisibilityCheck = () => {
+      if (!visibilityFrame) visibilityFrame = requestAnimationFrame(updateAutoplayVisibility);
+    };
+
+    const handleResize = () => {
+      measureRail();
+      scheduleVisibilityCheck();
+    };
+
+    const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(rail);
-    visibilityObserver.observe(rail);
-    window.addEventListener("resize", measureRail);
+    scheduleVisibilityCheck();
+    window.addEventListener("scroll", scheduleVisibilityCheck, { passive: true });
+    window.addEventListener("resize", handleResize);
 
     return () => {
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(visibilityFrame);
       resizeObserver.disconnect();
-      visibilityObserver.disconnect();
-      window.removeEventListener("resize", measureRail);
+      window.removeEventListener("scroll", scheduleVisibilityCheck);
+      window.removeEventListener("resize", handleResize);
     };
   }, [measureRail]);
 
@@ -67,7 +90,7 @@ export default function TestimonialsSection() {
     const timer = window.setInterval(() => {
       const rail = railRef.current;
       const now = Date.now();
-      if (!rail || !autoplayVisibleRef.current || dragRef.current.active || now < pauseUntilRef.current || now - lastAdvanceRef.current < 2500) return;
+      if (!rail || !autoplayVisibleRef.current || dragRef.current.active || now < pauseUntilRef.current || now - lastAdvanceRef.current < autoplayDelay) return;
 
       const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
       if (maxScroll <= 0) return;
@@ -106,6 +129,10 @@ export default function TestimonialsSection() {
     dragRef.current = { active: true, horizontal: true, pointerType: "mouse", startX: event.clientX, startY: event.clientY, startScroll: rail.scrollLeft };
     rail.setPointerCapture(event.pointerId);
     rail.dataset.dragging = "true";
+  };
+
+  const handleWheel = (event) => {
+    if (event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) pauseAutoplay();
   };
 
   const handlePointerMove = (event) => {
@@ -157,7 +184,7 @@ export default function TestimonialsSection() {
         ref={railRef}
         className="testimonials-rail"
         onScroll={measureRail}
-        onWheel={pauseAutoplay}
+        onWheel={handleWheel}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={stopDragging}
